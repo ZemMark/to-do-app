@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import * as basicLightbox from 'basiclightbox';
+import 'basiclightbox/dist/basicLightbox.min.css';
 const getTodo = ({ id, value, checked }) => `
   <li data-id=${id}>
     <input type="checkbox" data-action="checkbox" ${checked ? 'checked' : ''} />
@@ -6,9 +8,19 @@ const getTodo = ({ id, value, checked }) => `
     <button data-action="delete">x</button>
     <button data-action="view">view</button>
   </li>`;
+const tasksModal = basicLightbox.create(`
+    <div class="modal">
+        <p class="modal-text">
+            Your first lightbox with just a few lines of code.
+            Yes, it's really that simple.
+        </p>
+        <button class="modal-button" id="close-modal" type="button">ok</button>
+    </div>
+`);
 const refs = {
   form: document.getElementById('form'),
   list: document.getElementById('todo-list'),
+  buttonModalClose: tasksModal.element().querySelector('button'),
 };
 let todos = [];
 function saveTasks() {
@@ -27,6 +39,7 @@ function toggleCheckboxValue(id) {
   saveTasks();
   render();
 }
+
 function loadTasksFromLocalStorage() {
   console.log(todos);
   try {
@@ -54,7 +67,9 @@ const deleteTodo = id => {
   render();
 };
 const viewTodo = id => {
-  console.log('view todo');
+  console.log();
+  tasksModal.show();
+  console.log(te);
 };
 const handleTodoClick = event => {
   const { action } = event.target.dataset;
@@ -82,8 +97,10 @@ const render = () => {
   refs.list.insertAdjacentHTML('beforeend', itemList);
   saveTasks();
 };
+
 loadTasksFromLocalStorage();
 render();
 
 refs.form.addEventListener('submit', handleSubmit);
 refs.list.addEventListener('click', handleTodoClick);
+refs.buttonModalClose.addEventListener('click', tasksModal.close);
