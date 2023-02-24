@@ -1,27 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import * as basicLightbox from 'basiclightbox';
-import 'basiclightbox/dist/basicLightbox.min.css';
-const getTodo = ({ id, value, checked }) => `
-  <li data-id=${id}>
-    <input type="checkbox" data-action="checkbox" ${checked ? 'checked' : ''} />
-    <span>${value}</span>
-    <button data-action="delete">x</button>
-    <button data-action="view">view</button>
-  </li>`;
-const tasksModal = basicLightbox.create(`
-    <div class="modal">
-        <p class="modal-text">
-            Your first lightbox with just a few lines of code.
-            Yes, it's really that simple.
-        </p>
-        <button class="modal-button" id="close-modal" type="button">ok</button>
-    </div>
-`);
+import { getTodo, tasksModal } from './components';
 const refs = {
   form: document.getElementById('form'),
   list: document.getElementById('todo-list'),
   buttonModalClose: tasksModal.element().querySelector('button'),
 };
+
 let todos = [];
 function saveTasks() {
   localStorage.setItem('todos', JSON.stringify(todos));
@@ -69,7 +53,6 @@ const deleteTodo = id => {
 const viewTodo = id => {
   console.log();
   tasksModal.show();
-  console.log(te);
 };
 const handleTodoClick = event => {
   const { action } = event.target.dataset;
